@@ -32,24 +32,23 @@ exports.getEvents = (req, res) => {
  * @param {Object} req - Express request object. Expected properties:
  *   - body:
  *     - name: {string} The name of the event.
- *     - date_start_time: {string} The start time of the event in the format "dd-mm-yy_hhmm".
- *     - date_end_time: {string} The end time of the event in the format "dd-mm-yy_hhmm".
+ *     - date_start_time: {string} The start time of the event, STRICTLY only in custom format like "2-09-23_1700".
+ *     - date_end_time: {string} The end time of the event, similar to the start time format.
  *     - location: {string} The location of the event.
- *     - lesson_is_paid: {boolean} Indicates if the lesson is paid or not.
+ *     Note: The property 'lesson_is_paid' will be sourced from the existing event or set to a default value.
  * @param {Object} res - Express response object.
  *
  * @returns {Object} Response object with details of the created event.
  */
 exports.createEvent = (req, res) => {
   console.log("called createEvent in controller");
-  const { name, date_start_time, date_end_time, location, lesson_is_paid } =
-    req.body;
+  const { name, date_start_time, date_end_time, location } = req.body;
   const event = new TuitionEvent(
     name,
     date_start_time,
     date_end_time,
     location,
-    lesson_is_paid
+    false
   );
 
   calendar.events.insert(
@@ -65,16 +64,20 @@ exports.createEvent = (req, res) => {
 };
 
 /**
- * deleteEvent - Deletes an event from the Google Calendar.
+ * Deletes a specified event from the Google Calendar.
  *
- * @param {Object} req - Express request object. Expected properties:
- *   - body:
- *     - name: {string} The name of the event.
- *     - location: {string} The location of the event.
- *     - date_start_time: {string} The start time of the event in ISO format.
- * @param {Object} res - Express response object.
+ * @function
+ * @name deleteEvent
  *
- * @returns {Object} Response object with a message indicating deletion status.
+ * @param {Object} req - Express request object containing event details.
+ * @property {Object} req.body - The details of the event to be deleted.
+ * @property {string} req.body.name - The name/title of the event.
+ * @property {string} req.body.location - The location of the event.
+ * @property {string} req.body.date_start_time - The start time of the event. Must adhere to the format "dd-mm-yy_hhmm", e.g., "2-09-23_1700".
+ *
+ * @param {Object} res - Express response object for sending back the results.
+ *
+ * @returns {Object} An Express response object. If successful, it contains a message confirming the deletion of the event. In case of errors, it contains the corresponding error message.
  */
 
 exports.deleteEvent = (req, res) => {
@@ -105,12 +108,11 @@ exports.deleteEvent = (req, res) => {
       }
 
       console.log("Fetched events for deletion:", response.data.items.length);
-
       const eventToDelete = response.data.items.find((event) => {
         return (
           event.summary === name &&
           event.location === location &&
-          event.start.dateTime === date_start_time
+          event.start.dateTime === formatDateToISO(date_start_time)
         );
       });
 
@@ -143,27 +145,30 @@ exports.deleteEvent = (req, res) => {
 };
 
 /**
- * updateEvent - Updates the description of an event in the Google Calendar.
+ * Updates a specific event's description in the Google Calendar based on provided criteria.
  *
- * @param {Object} req - Express request object. Expected properties:
- *   - body:
- *     - name: {string} The name of the event.
- *     - location: {string} The location of the event.
- *     - date_start_time: {string} The start time of the event in ISO format.
- *     - date_end_time: {string} The end time of the event in ISO format.
- *     - lesson_is_paid: {boolean} Indicates if the lesson is paid or not.
- * @param {Object} res - Express response object.
+ * @function
+ * @name updateEvent
  *
- * @returns {Object} Response object with details of the updated event.
+ * @param {Object} req - Express request object containing event update details.
+ * @property {Object} req.body - The details of the event to be updated.
+ * @property {string} req.body.name - The name/title of the event.
+ * @property {string} req.body.location - The location where the event will take place.
+ * @property {string} req.body.date_start_time - The start time of the event, formatted as "dd-mm-yy_hhmm", e.g., "2-09-23_1700".
+ * @note The end time of the event and the status of whether the lesson is paid will be derived from the existing event in the calendar.
+ *
+ * @param {Object} res - Express response object for sending back the results.
+ *
+ * @returns {Object} An Express response object. If successful, it contains details of the updated event. In case of errors, it contains the corresponding error message.
  */
 
 exports.updateEvent = (req, res) => {
   const { name, location, date_start_time } = req.body;
 
-  // Calculate the time range: 12 hours backward and 36 hours forward
+  // Calculate the time range: 24 hours backward and 24 hours forward
   const now = new Date();
-  const timeMin = new Date(now.getTime() - 12 * 60 * 60 * 1000).toISOString(); // Subtracting 12 hours
-  const timeMax = new Date(now.getTime() + 36 * 60 * 60 * 1000).toISOString(); // Adding 36 hours
+  const timeMin = new Date(now.getTime() - 24 * 60 * 60 * 1000).toISOString(); // Subtracting 24 hours
+  const timeMax = new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString(); // Adding 24 hours
 
   // Retrieve events within the specified time range
   calendar.events.list(
@@ -182,23 +187,25 @@ exports.updateEvent = (req, res) => {
         return (
           event.summary === name &&
           event.location === location &&
-          event.start.dateTime === date_start_time
+          event.start.dateTime === formatDateToISO(date_start_time)
         );
       });
 
       if (!eventToUpdate) {
         return res.status(404).send({ message: "Event not found." });
       }
-
+      console.log("Retrieval Successful");
+      console.log(eventToUpdate.end.dateTime);
       // Update the found event
       const updatedEvent = new TuitionEvent(
         name,
-        date_start_time,
-        req.body.date_end_time,
+        eventToUpdate.start.dateTime,
+        eventToUpdate.end.dateTime,
         location,
-        req.body.lesson_is_paid
+        true
       );
-
+      console.log("Update Started");
+      console.log(updatedEvent);
       calendar.events.update(
         {
           calendarId: process.env.SPECIFIC_CALENDAR_ID,
@@ -210,6 +217,27 @@ exports.updateEvent = (req, res) => {
           return res.status(200).send(event.data);
         }
       );
+
+      console.log("Update Successful");
     }
   );
 };
+
+/** CAN BE IGNORED
+ * Helper function that converts a custom date-time string into its ISO format with a timezone offset of +08:00.
+ *
+ * @function
+ * @name formatDateToISO
+ *
+ * @param {string} date_str - The custom date-time string formatted as "dd-mm-yy_hhmm", e.g., "2-09-23_1700".
+ *
+ * @returns {string} The date-time in ISO format with a timezone offset of +08:00.
+ */
+function formatDateToISO(date_str) {
+  // Convert date string "2-09-23_1700" to ISO format
+  const [date, time] = date_str.split("_");
+  const [day, month, year] = date.split("-");
+  const hour = time.substring(0, 2);
+  const minute = time.substring(2);
+  return `20${year}-${month}-${day}T${hour}:${minute}:00+08:00`;
+}
