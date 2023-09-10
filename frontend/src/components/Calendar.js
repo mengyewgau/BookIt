@@ -11,7 +11,7 @@ const Calendar = () => {
   const [selectedDateEvents, setSelectedDateEvents] = useState([]);
   const [showModifyClass, setShowModifyClass] = useState(false);
 
-  // ------------------------------------------------ Retrieve Events ------------------------------------------------
+  // ------------------------------------------------ Retrieve Events ------------------------------------------------ //
   useEffect(() => {
     fetch("http://localhost:4000/api/events")
       .then((response) => response.json())
@@ -54,7 +54,7 @@ const Calendar = () => {
       });
   }, []);
 
-  // ------------------------------------------------ Select Events ------------------------------------------------
+  // ------------------------------------------------ Select Events ------------------------------------------------ //
   const onChange = (newDate) => {
     setDate(newDate);
     allEvents.forEach((event) => {
@@ -89,7 +89,7 @@ const Calendar = () => {
     setShowModifyClass(true);
   };
 
-  // ------------------------------------------------ HTML Render ------------------------------------------------
+  // ------------------------------------------------ HTML Render ------------------------------------------------ //
   return (
     <div style={{ display: "flex" }}>
       <ReactCalendar onChange={onChange} value={date} />
