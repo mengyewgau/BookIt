@@ -1,0 +1,38 @@
+/* TuitionSlot.css */
+.popup {
+  position: absolute;
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+}
+
+.tuition-slot {
+  background-color: #3289b9;
+  color: white;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modifyButton {
+  background-color: #ffd21a;
+  color: black;
+  border: 3px solid transparent;
+  padding: 5px 10px;
+  margin-top: 5px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.modifyButton:hover {
+  border-color: black;
+  background-color: #ffd21a;
+}
