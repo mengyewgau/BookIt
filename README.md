@@ -1,10 +1,12 @@
 # 📚 BookIt
 
-BookIt was spawned out my need as a private tutor to keep track of classes, payments, and provide an easy way for parents and students to interact with my schedule
+BookIt was spawned out of my need as a private tutor to keep track of classes, payments, and provide an easy way for parents and students to interact with my schedule
 
 ## 🔧 Tech Stack
 
-**ReactJS, ExpressJS, CORS, Morgan**
+![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
+![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
+![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
 
 ### Prerequsites
 
@@ -37,7 +39,7 @@ npm install
 npm start
 ```
 
-## The environment file should have the parameters as follows
+### ENV file
 
 ```
 GOOGLE_CLIENT_ID=google_client_id
