@@ -1,18 +1,25 @@
 {
   "name": "bookit_full",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npm run start:frontend & npm start:backend",
-    "start:frontend": "cd frontend && npm start",
-    "start:backend": "cd backend && npm start",
+    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start:frontend": "cd frontend && npm run start",
+    "start:backend": "cd backend && node app/start.js",
     "install:all": "npm run install:frontend && npm run install:backend",
     "install:frontend": "cd frontend && npm install",
-    "install:backend": "cd backend && npm install"
+    "install:backend": "cd backend && npm install",
+    "test:backend": "node --cwd backend mocha --exit",
+    "build:frontend": "react-scripts --cwd frontend react-scripts build",
+    "test:frontend": "react-scripts --cwd frontend react-scripts test",
+    "eject:frontend": "react-scripts --cwd frontend react-scripts eject"
   },
   "proxy": "http://localhost:4000",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.1"
+  }
 }
