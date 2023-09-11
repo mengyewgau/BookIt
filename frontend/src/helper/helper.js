@@ -16,7 +16,7 @@
  * const sgDate = getSingaporeDate();
  * console.log(sgDate);  // Outputs: "2023-09-11T14:20:30.000Z" (example value)
  */
-function getSingaporeDate() {
+export function getSingaporeDate() {
   // Create a new date object
   const now = new Date();
 
@@ -48,7 +48,7 @@ function getSingaporeDate() {
  * const formattedDate = formatDate(dateObj);
  * console.log(formattedDate);  // Outputs: "2023-09-11"
  */
-function formatDate(d) {
+export function formatDate(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
     2,
     "0"
@@ -72,7 +72,7 @@ function formatDate(d) {
  * const formattedDate = formatDate(dateObj);
  * console.log(formattedDate);  // Outputs: "2023-09-11"
  */
-function formatDateForServer(dateTime) {
+export function formatDateForServer(dateTime) {
   // Assuming the dateTime format is like "2023-09-02T17:00:00Z"
   const [datePart, timePart] = dateTime.split("T");
   const [year, month, day] = datePart.split("-");
@@ -100,7 +100,7 @@ function formatDateForServer(dateTime) {
  * const end = getEndDateTimeString(start, 1.5);
  * console.log(end);  // Outputs: "2023-09-11T11:30"
  */
-function getEndDateTimeString(dateTime, duration) {
+export function getEndDateTimeString(dateTime, duration) {
   // Derive start time
 
   // Intermediate string splits
@@ -131,10 +131,3 @@ function getEndDateTimeString(dateTime, duration) {
 
   return date + "T" + endTime;
 }
-
-export {
-  getSingaporeDate,
-  formatDate,
-  formatDateForServer,
-  getEndDateTimeString,
-};
