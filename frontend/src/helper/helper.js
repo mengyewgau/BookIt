@@ -132,7 +132,7 @@ function getEndDateTimeString(dateTime, duration) {
   return date + "T" + endTime;
 }
 
-module.exports = {
+export {
   getSingaporeDate,
   formatDate,
   formatDateForServer,

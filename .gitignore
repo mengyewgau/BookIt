@@ -76,3 +76,8 @@ typings/
 /frontend/yarn.lock
 /frontend/app.yaml
 /frontend/build/
+
+
+# Root
+/app.yaml
+/.gcloudignore

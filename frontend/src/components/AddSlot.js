@@ -1,15 +1,12 @@
 import React, { useState } from "react";
 import "./addslot.css";
+import { formatDateForServer, getEndDateTimeString } from "../helper/helper";
 
 const AddSlot = ({ selectedDate, onEventAdded }) => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [duration, setDuration] = useState("");
   const [dateTime, setDateTime] = useState(selectedDate.toISOString());
-  const {
-    formatDateForServer,
-    getEndDateTimeString,
-  } = require("../helper/helper");
 
   // ------------------------------------------------ Add Event Logic ------------------------------------------------ //
   const handleAddEvent = async (e) => {
@@ -27,7 +24,7 @@ const AddSlot = ({ selectedDate, onEventAdded }) => {
         date_end_time: formatDateForServer(endDateString),
       };
 
-      const response = await fetch(`http://localhost:4000/api/events`, {
+      const response = await fetch(`/api/events`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

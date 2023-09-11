@@ -3,7 +3,7 @@ const express = require("express");
 const morgan = require("morgan");
 const fs = require("fs");
 const path = require("path");
-const cors = require("cors"); // <-- Import the cors package
+const cors = require("cors");
 
 const bodyParser = require("body-parser");
 const calendarRoutes = require("./routes/calendarRoutes");
@@ -17,7 +17,13 @@ const accessLogStream = fs.createWriteStream(
   { flags: "a" }
 );
 
-app.use(cors()); // <-- Use the CORS middleware here, before your routes
+app.use(cors()); // Use the CORS middleware
+
+// Serve static frontend assets
+app.use(express.static(path.resolve(__dirname, ".build")));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist/index.html"));
+});
 
 app.use(bodyParser.json());
 app.use("/api", calendarRoutes);

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import ReactCalendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./calendar.css";
+import { getSingaporeDate, formatDate } from "../helper/helper";
 import TuitionSlot from "./TuitionSlot";
 import AddSlot from "./AddSlot";
 
@@ -9,11 +10,10 @@ const Calendar = () => {
   const [date, setDate] = useState(new Date());
   const [allEvents, setAllEvents] = useState([]);
   const [selectedDateEvents, setSelectedDateEvents] = useState([]);
-  const { getSingaporeDate, formatDate } = require("../helper/helper");
 
   // ------------------------------------------------ Retrieve Events ------------------------------------------------ //
   const fetchEvents = () => {
-    fetch("http://localhost:4000/api/events")
+    fetch("/api/events")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch events from server.");

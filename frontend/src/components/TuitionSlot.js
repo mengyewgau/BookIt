@@ -1,9 +1,7 @@
 import React from "react";
 import "./tuitionslot.css";
-
+import { formatDateForServer } from "../helper/helper";
 const TuitionSlot = ({ event, onDeleted }) => {
-  const { formatDateForServer } = require("../helper/helper");
-
   // ------------------------------------------------ Delete Event Logic ------------------------------------------------ //
   const handleDeleteEvent = async () => {
     // Display confirmation popup
@@ -22,7 +20,7 @@ const TuitionSlot = ({ event, onDeleted }) => {
         date_start_time: formatDateForServer(event.start.dateTime), // format the date and time as specified
       };
 
-      const response = await fetch(`http://localhost:4000/api/events`, {
+      const response = await fetch(`/api/events`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
