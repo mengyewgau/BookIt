@@ -1,7 +1,9 @@
 import React from "react";
 import "./tuitionslot.css";
 
-const TuitionSlot = ({ event }) => {
+const TuitionSlot = ({ event, onDeleted }) => {
+  const { formatDateForServer } = require("../helper/helper");
+
   // ------------------------------------------------ Delete Event Logic ------------------------------------------------ //
   const handleDeleteEvent = async () => {
     // Display confirmation popup
@@ -35,21 +37,14 @@ const TuitionSlot = ({ event }) => {
       const result = await response.json();
 
       alert(result.message || "Event deleted successfully.");
+      // Inform the parent component that the event has been deleted.
+      onDeleted(event.id);
     } catch (error) {
       console.error("Error deleting the event:", error);
       alert("Failed to delete the event. Please try again.");
     }
   };
-  // Helper function to format date and time as "dd-mm-yy_hhmm"
-  function formatDateForServer(dateTime) {
-    // Assuming the dateTime format is like "2023-09-02T17:00:00Z"
-    const [datePart, timePart] = dateTime.split("T");
-    const [year, month, day] = datePart.split("-");
-    const [hour, minute] = timePart.split(":");
 
-    const formattedDate = `${day}-${month}-${year.slice(-2)}_${hour}${minute}`;
-    return formattedDate;
-  }
   // ------------------------------------------------ Date Parsing ------------------------------------------------ //
   // Parse the date and time from the Google Calendar format
   const parseDateAndTime = (dateTime) => {

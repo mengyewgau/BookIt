@@ -12,15 +12,17 @@ const Calendar = () => {
   const { getSingaporeDate, formatDate } = require("../helper/helper");
 
   // ------------------------------------------------ Retrieve Events ------------------------------------------------ //
-  useEffect(() => {
+  const fetchEvents = () => {
     fetch("http://localhost:4000/api/events")
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch events from server.");
+        }
+        return response.json();
+      })
       .then((data) => {
-        // console.log("Parsed data:", data);
-
         // Access the 'items' property from the API response
         const events = data.items;
-        // console.log("All events:", events); // Log all events for inspection
 
         if (Array.isArray(events)) {
           // --------------- Current Date --------------- //
@@ -30,6 +32,7 @@ const Calendar = () => {
           start_date.setMonth(today.getMonth() - 2);
           const end_date = new Date(today);
           end_date.setMonth(today.getMonth() + 4);
+
           // --------------- Filtering Events --------------- //
           const filteredEvents = events.filter((event) => {
             // If the event has a status of "cancelled", ignore it
@@ -52,6 +55,10 @@ const Calendar = () => {
       .catch((error) => {
         console.error("Error fetching events:", error);
       });
+  };
+
+  useEffect(() => {
+    fetchEvents(); // Initial fetch
   }, []);
 
   // ------------------------------------------------ Select Events ------------------------------------------------ //
@@ -82,18 +89,34 @@ const Calendar = () => {
 
     setSelectedDateEvents(selectedEvents);
   };
+  // ------------------------------------------------ Handle Deleted Events ------------------------------------------------ //
+
+  const handleEventDeleted = (deletedEventId) => {
+    const updatedAllEvents = allEvents.filter(
+      (event) => event.id !== deletedEventId
+    );
+    const updatedSelectedDateEvents = selectedDateEvents.filter(
+      (event) => event.id !== deletedEventId
+    );
+
+    setAllEvents(updatedAllEvents);
+    setSelectedDateEvents(updatedSelectedDateEvents);
+  };
 
   // ------------------------------------------------ HTML Render ------------------------------------------------ //
   return (
     <div style={{ display: "flex" }}>
-      {/* Place the AddSlot component here, to the left of the calendar */}
-      <AddSlot selectedDate={date} />
+      <AddSlot selectedDate={date} onEventAdded={fetchEvents} />
       <ReactCalendar onChange={onChange} value={date} />
       <div className="options">
         <div className="selectedDate">Date: {date.toDateString()}</div>
         {selectedDateEvents.length > 0 ? (
           selectedDateEvents.map((event) => (
-            <TuitionSlot key={event.id} event={event} />
+            <TuitionSlot
+              key={event.id}
+              event={event}
+              onDeleted={handleEventDeleted}
+            />
           ))
         ) : (
           <div>Currently Empty! Book a slot!</div>

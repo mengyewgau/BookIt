@@ -1,34 +1,31 @@
 import React, { useState } from "react";
 import "./addslot.css";
 
-const AddSlot = ({ selectedDate }) => {
+const AddSlot = ({ selectedDate, onEventAdded }) => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [duration, setDuration] = useState("");
-  const [dateTime, setDateTime] = useState(
-    selectedDate.toISOString().split("T")[0]
-  );
-  const { formatDateForServer } = require("../helper/helper");
+  const [dateTime, setDateTime] = useState(selectedDate.toISOString());
+  const {
+    formatDateForServer,
+    getEndDateTimeString,
+  } = require("../helper/helper");
 
   // ------------------------------------------------ Add Event Logic ------------------------------------------------ //
   const handleAddEvent = async (e) => {
     e.preventDefault();
 
     try {
-      const startDate = new Date(dateTime); // Convert the dateTime string into a Date object
-      const endDate = new Date(startDate.getTime() + duration * 60 * 60 * 1000); // Calculate the end time based on the duration
+      let endDateString = getEndDateTimeString(dateTime, duration);
 
-      console.log("Start Date:", startDate.toString()); // Debugging
-      console.log("End Date:", endDate.toString()); // Debugging
+      console.log(endDateString);
 
       const eventData = {
         name: name,
         location: location,
-        date_start_time: formatDateForServer(startDate),
-        date_end_time: formatDateForServer(endDate),
+        date_start_time: formatDateForServer(dateTime),
+        date_end_time: formatDateForServer(endDateString),
       };
-
-      console.log(eventData.date_start_time);
 
       const response = await fetch(`http://localhost:4000/api/events`, {
         method: "POST",
@@ -44,6 +41,8 @@ const AddSlot = ({ selectedDate }) => {
 
       const result = await response.json();
       alert(result.message || "Event added successfully.");
+      // Trigger the refetch after successfully adding an event
+      onEventAdded();
     } catch (error) {
       console.error("Error adding the event:", error);
       alert("Failed to add the event. Please try again.");
@@ -52,9 +51,9 @@ const AddSlot = ({ selectedDate }) => {
 
   // ------------------------------------------------ HTML Render ------------------------------------------------ //
   return (
-    <div className="tuition-slot">
+    <div className="add-slot">
       <h3 className="selectedDateAddSlot">
-        Selected Date: {selectedDate.toDateString()}
+        Selected: {selectedDate.toDateString()}
       </h3>{" "}
       <form onSubmit={handleAddEvent}>
         <div>

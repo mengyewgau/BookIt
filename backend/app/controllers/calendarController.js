@@ -111,9 +111,9 @@ exports.deleteEvent = (req, res) => {
   console.log("deleteEvent function triggered!");
   const { name, location, date_start_time } = req.body;
 
-  // Calculate the time range: 12 hours backward and 36 hours forward
+  // Calculate the time range: 36 hours backward and 36 hours forward
   const now = new Date();
-  const timeMin = new Date(now.getTime() - 12 * 60 * 60 * 1000).toISOString();
+  const timeMin = new Date(now.getTime() - 36 * 60 * 60 * 1000).toISOString();
   const timeMax = new Date(now.getTime() + 36 * 60 * 60 * 1000).toISOString();
 
   // Retrieve events within the specified time range
