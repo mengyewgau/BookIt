@@ -36,10 +36,12 @@ npm install
 3. **Start the server**:
 
 ```
-npm start
+npm run start
 ```
 
 ### ENV file
+
+1. File Format
 
 ```
 GOOGLE_CLIENT_ID=google_client_id
@@ -48,6 +50,25 @@ REDIRECT_URL=http://localhost:4000/oauth2callback
 SPECIFIC_CALENDAR_ID=google_specific_calendar_id
 ACCESS_TOKEN=access_token
 REFRESH_TOKEN=refresh_token
+```
+
+2. Access and Refresh Token
+   If you are not sure how to capture the access and refresh token, delete the lines from your environment file, and do the following.
+
+a. In backend/app/utils/googleAuth.js
+
+```
+// Uncomment the below line for the first run to get the tokens
+getNewTokens();
+```
+
+b. Start the server once and authenticate at localhost:4000
+
+c. Comment the line out again
+
+```
+// Uncomment the below line for the first run to get the tokens
+// getNewTokens();
 ```
 
 ## Contributing
