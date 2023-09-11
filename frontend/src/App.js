@@ -14,6 +14,10 @@ function App() {
         Book/Reschedule a class with me, view existing classes and time, or pay
         class fees!
       </h5>
+      <footer>
+        <p>Currently fee payment is not supported</p>
+        <p>&copy; Gau Meng Yew</p>
+      </footer>
     </div>
   );
 }
