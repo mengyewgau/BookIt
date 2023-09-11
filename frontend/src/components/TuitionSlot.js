@@ -4,6 +4,14 @@ import "./tuitionslot.css";
 const TuitionSlot = ({ event }) => {
   // ------------------------------------------------ Delete Event Logic ------------------------------------------------ //
   const handleDeleteEvent = async () => {
+    // Display confirmation popup
+    const userConfirmed = window.confirm(
+      "Are you sure you want to delete this event?"
+    );
+
+    // If the user clicks "Cancel", exit the function without deleting
+    if (!userConfirmed) return;
+
     try {
       // Extract necessary details from the event
       const eventData = {
@@ -42,7 +50,6 @@ const TuitionSlot = ({ event }) => {
     const formattedDate = `${day}-${month}-${year.slice(-2)}_${hour}${minute}`;
     return formattedDate;
   }
-
   // ------------------------------------------------ Date Parsing ------------------------------------------------ //
   // Parse the date and time from the Google Calendar format
   const parseDateAndTime = (dateTime) => {

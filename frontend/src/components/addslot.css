@@ -1,0 +1,63 @@
+/* AddSlot.css */
+
+/* Container */
+.tuition-slot {
+  border: 2px solid lightgray;
+  color: black;
+  padding: 10px;
+  max-width: 400px;
+  background-color: white;
+}
+
+/* Button */
+.addButton {
+  background-color: #ffd21a;
+  color: black;
+  border: 3px solid transparent;
+  padding: 5px 10px;
+  margin-top: 5px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.addButton:hover {
+  border-color: black;
+  background-color: #ffd21a;
+}
+
+/* Selected Date */
+.selectedDateAddSlot {
+  color: #0078d7;
+  font-weight: bold;
+  margin-bottom: 10px; /* Space below the date heading */
+}
+
+/* Input fields with consistent width */
+.tuition-slot input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+/* Right-aligned labels */
+.tuition-slot label {
+  flex-grow: 1; /* Allow the label to grow and take up available space */
+  text-align: right;
+  margin-right: 10px;
+}
+
+/* Container for label-input pairs */
+.tuition-slot .form-field {
+  display: flex;
+  align-items: center; /* Vertically center align the label and input */
+  margin-bottom: 10px; /* Space between each label-input pair */
+}
+
+/* Form structure */
+.tuition-slot form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

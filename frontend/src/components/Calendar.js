@@ -3,13 +3,13 @@ import ReactCalendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "./calendar.css";
 import TuitionSlot from "./TuitionSlot";
+import AddSlot from "./AddSlot";
 
 const Calendar = () => {
-  const timeOptions = ["09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM"];
   const [date, setDate] = useState(new Date());
   const [allEvents, setAllEvents] = useState([]);
   const [selectedDateEvents, setSelectedDateEvents] = useState([]);
-  const [showModifyClass, setShowModifyClass] = useState(false);
+  const { getSingaporeDate, formatDate } = require("../helper/helper");
 
   // ------------------------------------------------ Retrieve Events ------------------------------------------------ //
   useEffect(() => {
@@ -83,15 +83,11 @@ const Calendar = () => {
     setSelectedDateEvents(selectedEvents);
   };
 
-  // To add: When I click an event, I can mark as not attended to delete it
-  const handleModify = (event) => {
-    console.log("Modify event:", event);
-    setShowModifyClass(true);
-  };
-
   // ------------------------------------------------ HTML Render ------------------------------------------------ //
   return (
     <div style={{ display: "flex" }}>
+      {/* Place the AddSlot component here, to the left of the calendar */}
+      <AddSlot selectedDate={date} />
       <ReactCalendar onChange={onChange} value={date} />
       <div className="options">
         <div className="selectedDate">Date: {date.toDateString()}</div>
@@ -107,24 +103,4 @@ const Calendar = () => {
   );
 };
 
-function getSingaporeDate() {
-  // Create a new date object
-  const now = new Date();
-
-  // Convert the current date to Singapore timezone (GMT+8)
-  const singaporeTime = new Date(
-    now.toLocaleString("en-US", { timeZone: "Asia/Singapore" })
-  );
-
-  // Adjust for the timezone difference between UTC and GMT+8
-  const offset = singaporeTime.getTime() - now.getTime();
-
-  return new Date(now.getTime() + offset);
-}
-function formatDate(d) {
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}-${String(d.getDate()).padStart(2, "0")}`;
-}
 export default Calendar;
