@@ -46,7 +46,7 @@ npm run start
 ```
 GOOGLE_CLIENT_ID=google_client_id
 GOOGLE_CLIENT_SECRET=google_client_secret
-REDIRECT_URL=http://localhost:4000/oauth2callback
+REDIRECT_URL=https://yourdomain.com/oauth2callback
 SPECIFIC_CALENDAR_ID=google_specific_calendar_id
 ACCESS_TOKEN=access_token
 REFRESH_TOKEN=refresh_token
