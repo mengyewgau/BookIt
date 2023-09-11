@@ -1,3 +1,6 @@
+# Root ignore rules
+/package-lock.json
+
 # Backend ignore rules
 /backend/node_modules/
 /backend/npm-debug.log*
