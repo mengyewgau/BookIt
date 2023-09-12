@@ -2,6 +2,9 @@
 
 BookIt was spawned out of my need as a private tutor to keep track of classes, payments, and provide an easy way for parents and students to interact with my schedule
 
+You can find a live deployment of my website here for reference! **PLEASE DO NOT DELETE ANYTHING D:**
+https://bookit-398804.as.r.appspot.com/
+
 ## 🔧 Tech Stack
 
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
@@ -36,7 +39,7 @@ npm install
 3. **Start the server**:
 
 ```
-npm run start
+npm run "concurrently \"npm run start:frontend\" \"npm run start:backend\""
 ```
 
 ### ENV file

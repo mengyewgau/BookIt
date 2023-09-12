@@ -14,10 +14,10 @@ const { handleOAuth2Callback } = require("./middleware/authMiddleware");
 const app = express();
 
 // Create a write stream (in append mode)
-const accessLogStream = fs.createWriteStream(
-  path.join(__dirname, "access.log"),
-  { flags: "a" }
-);
+// const accessLogStream = fs.createWriteStream(
+//   path.join(__dirname, "access.log"),
+//   { flags: "a" }
+// );
 
 app.use(cors()); // Use the CORS middleware
 
@@ -32,6 +32,6 @@ app.use("/api", calendarRoutes);
 app.get("/oauth2callback", handleOAuth2Callback);
 
 // Use morgan to log requests to a file
-app.use(morgan("combined", { stream: accessLogStream }));
+// app.use(morgan("combined", { stream: accessLogStream }));
 
 module.exports = app;

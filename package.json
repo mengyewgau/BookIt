@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start": "npm run start:backend",
     "start:frontend": "cd frontend && npm run start",
     "start:backend": "cd backend && node app/start.js",
     "install:all": "npm install && npm run install:frontend && npm run install:backend",
@@ -14,7 +14,7 @@
     "build:frontend": "cd frontend && npm run build",
     "test:frontend": "cd frontend && npm run test",
     "eject:frontend": "cd frontend && npm run eject",
-    "gcp-build": "npm run install:all && npm run build:frontend && npm run install:backend"
+    "gcp-build": "npm run install:backend"
   },
   "proxy": "http://localhost:4000",
   "keywords": [],

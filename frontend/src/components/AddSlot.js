@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./addslot.css";
 import { formatDateForServer, getEndDateTimeString } from "../helper/helper";
 
-const AddSlot = ({ selectedDate, onEventAdded }) => {
+const AddSlot = ({ displayDate, selectedDate, onEventAdded }) => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [duration, setDuration] = useState("");
   const [dateTime, setDateTime] = useState(selectedDate.toISOString());
 
+  useEffect(() => {
+    // Update dateTime state whenever selectedDate prop changes
+    setDateTime(selectedDate.toISOString());
+  }, [selectedDate]);
+
   // ------------------------------------------------ Add Event Logic ------------------------------------------------ //
   const handleAddEvent = async (e) => {
     e.preventDefault();
-
     try {
       let endDateString = getEndDateTimeString(dateTime, duration);
 
@@ -50,7 +54,7 @@ const AddSlot = ({ selectedDate, onEventAdded }) => {
   return (
     <div className="add-slot">
       <h3 className="selectedDateAddSlot">
-        Selected: {selectedDate.toDateString()}
+        Selected: {displayDate.toDateString()}
       </h3>{" "}
       <form onSubmit={handleAddEvent}>
         <div>

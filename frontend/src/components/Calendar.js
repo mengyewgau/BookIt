@@ -11,6 +11,9 @@ const Calendar = () => {
   const [allEvents, setAllEvents] = useState([]);
   const [selectedDateEvents, setSelectedDateEvents] = useState([]);
 
+  const [adjustedDate, setAdjustedDate] = useState(
+    new Date(date.getTime() + 86400000)
+  ); // Initial value is 1 day ahead
   // ------------------------------------------------ Retrieve Events ------------------------------------------------ //
   const fetchEvents = () => {
     fetch("/api/events")
@@ -56,14 +59,24 @@ const Calendar = () => {
         console.error("Error fetching events:", error);
       });
   };
+  // ------------------------------------------------ Use Effects ------------------------------------------------ //
 
   useEffect(() => {
     fetchEvents(); // Initial fetch
   }, []);
+  useEffect(() => {
+    const newAdjustedDate = new Date(date);
+    newAdjustedDate.setDate(date.getDate() + 1);
+    setAdjustedDate(newAdjustedDate);
+
+    // console.log("Selected Date is", date);
+    // console.log("Adjusted Date is", newAdjustedDate);
+  }, [date]);
 
   // ------------------------------------------------ Select Events ------------------------------------------------ //
   const onChange = (newDate) => {
     setDate(newDate);
+    adjustedDate.setDate(newDate.getDate() + 1);
     allEvents.forEach((event) => {
       if (!event.start || !event.start.dateTime) {
         console.warn("Missing start.dateTime for event:", event);
@@ -106,7 +119,11 @@ const Calendar = () => {
   // ------------------------------------------------ HTML Render ------------------------------------------------ //
   return (
     <div style={{ display: "flex" }}>
-      <AddSlot selectedDate={date} onEventAdded={fetchEvents} />
+      <AddSlot
+        displayDate={date}
+        selectedDate={adjustedDate}
+        onEventAdded={fetchEvents}
+      />
       <ReactCalendar onChange={onChange} value={date} />
       <div className="options">
         <div className="selectedDate">Date: {date.toDateString()}</div>
